@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracker Frekuensi Kode</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f3;
+      --bg-danger: #fcebeb;
+      --text-primary: #1a1a18;
+      --text-secondary: #6b6b66;
+      --text-tertiary: #9a9994;
+      --text-danger: #a32d2d;
+      --border: rgba(0,0,0,0.12);
+      --border-hover: rgba(0,0,0,0.25);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --blue: #378ADD;
+      --gold: #FAC775;
+      --gold-text: #412402;
+      --silver: #D3D1C7;
+      --silver-text: #2C2C2A;
+      --bronze: #F5C4B3;
+      --bronze-text: #4A1B0C;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1e1c;
+        --bg-secondary: #2a2a28;
+        --bg-danger: #3a1f1f;
+        --text-primary: #f0ede8;
+        --text-secondary: #a0a09a;
+        --text-tertiary: #6b6b66;
+        --text-danger: #f09595;
+        --border: rgba(255,255,255,0.12);
+        --border-hover: rgba(255,255,255,0.25);
+        --blue: #5ba3ed;
+        --gold: #d4a050;
+        --gold-text: #faeeda;
+        --silver: #888780;
+        --silver-text: #f1efe8;
+        --bronze: #c07060;
+        --bronze-text: #faece7;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"], input[type="number"] {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 14px;
+      height: 36px;
+      padding: 0 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type="text"] { flex: 1; }
+    input[type="number"] { width: 90px; }
+
+    input:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
+
+    button.btn-primary {
+      background: var(--bg);
+      border: 0.5px solid var(--border-hover);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 14px;
+      height: 36px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.1s;
+      white-space: nowrap;
+    }
+    button.btn-primary:hover { background: var(--bg-secondary); }
+    button.btn-primary:active { transform: scale(0.98); }
+
+    .error-msg {
+      color: var(--text-danger);
+      font-size: 13px;
+      min-height: 18px;
+      margin-bottom: 0.75rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .table-wrap {
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      table-layout: fixed;
+    }
+
+    th {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 8px 14px;
+      text-align: left;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 0.5px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg-secondary); }
+
+    th:nth-child(1), td:nth-child(1) { width: 52px; }
+    th:nth-child(2), td:nth-child(2) { width: 100px; }
+    th:nth-child(3), td:nth-child(3) { width: 70px; }
+    th:nth-child(5), td:nth-child(5) { width: 40px; }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .rank-1 { background: var(--gold); color: var(--gold-text); }
+    .rank-2 { background: var(--silver); color: var(--silver-text); }
+    .rank-3 { background: var(--bronze); color: var(--bronze-text); }
+    .rank-n { background: var(--bg-secondary); color: var(--text-secondary); }
+
+    .code-cell { font-family: monospace; font-size: 14px; }
+    .count-cell { font-weight: 500; font-size: 15px; }
+
+    .bar-wrap {
+      flex: 1;
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .pct-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      min-width: 34px;
+    }
+
+    .bar-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-del {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-tertiary);
+      font-size: 18px;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .btn-del:hover {
+      background: var(--bg-danger);
+      color: var(--text-danger);
+    }
+
+    .empty-msg {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.75rem;
+    }
+
+    .btn-clear {
+      background: none;
+      border: 0.5px solid var(--border-hover);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-clear:hover { background: var(--bg-secondary); }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tracker Frekuensi Kode</h1>
+    <p class="subtitle">Masukkan kode dan jumlahnya — data otomatis diurutkan dari terbanyak ke tersedikit.</p>
+
+    <div class="card">
+      <div class="input-row">
+        <input type="text" id="codeInput" placeholder="Masukkan kode (misal: 8032)" maxlength="30" />
+        <input type="number" id="countInput" placeholder="Jumlah" min="1" value="1" />
+        <button class="btn-primary" onclick="addCode()">
+          <i class="ti ti-plus" aria-hidden="true"></i> Tambah
+        </button>
+      </div>
+      <div class="error-msg" id="errMsg"></div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total kode unik</div>
+          <div class="stat-val" id="statUnique">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total entri</div>
+          <div class="stat-val" id="statTotal">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Kode teratas</div>
+          <div class="stat-val" id="statTop">—</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Kode</th>
+              <th>Jumlah</th>
+              <th>Proporsi</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="5" class="empty-msg">Belum ada data. Masukkan kode di atas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="action-row">
+        <button class="btn-clear" onclick="clearAll()">
+          <i class="ti ti-trash" aria-hidden="true"></i> Hapus semua
+        </button>
+      </div>
+    </div>
+
+    <footer>Data tersimpan di browser lokal (localStorage) masing-masing pengguna.</footer>
+  </div>
+
+  <script>
+    let data = {};
+    const STORAGE_KEY = 'code_tracker_v1';
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) data = JSON.parse(raw);
+      } catch(e) { data = {}; }
+      render();
+    }
+
+    function saveData() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+    }
+
+    function addCode() {
+      const code = document.getElementById('codeInput').value.trim();
+      const count = parseInt(document.getElementById('countInput').value) || 1;
+      const err = document.getElementById('errMsg');
+
+      if (!code) { err.textContent = 'Kode tidak boleh kosong.'; return; }
+      if (count < 1 || count > 9999) { err.textContent = 'Jumlah harus antara 1 – 9999.'; return; }
+      err.textContent = '';
+
+      data[code] = (data[code] || 0) + count;
+      saveData();
+      render();
+      document.getElementById('codeInput').value = '';
+      document.getElementById('countInput').value = '1';
+      document.getElementById('codeInput').focus();
+    }
+
+    function deleteCode(code) {
+      delete data[code];
+      saveData();
+      render();
+    }
+
+    function clearAll() {
+      if (!Object.keys(data).length) return;
+      if (confirm('Hapus semua data?')) { data = {}; saveData(); render(); }
+    }
+
+    function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function escAttr(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+    function render() {
+      const sorted = Object.entries(data).sort((a, b) => b[1] - a[1]);
+      const total = sorted.reduce((s, [, v]) => s + v, 0);
+      const max = sorted.length ? sorted[0][1] : 1;
+
+      document.getElementById('statUnique').textContent = sorted.length;
+      document.getElementById('statTotal').textContent = total.toLocaleString('id-ID');
+      document.getElementById('statTop').textContent = sorted.length ? sorted[0][0] : '—';
+
+      const tbody = document.getElementById('tableBody');
+      if (!sorted.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">Belum ada data. Masukkan kode di atas.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = sorted.map(([code, count], i) => {
+        const rank = i + 1;
+        const pct = total ? Math.round(count / total * 100) : 0;
+        const barW = Math.round(count / max * 100);
+        const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-n';
+        return `<tr>
+          <td><span class="rank-badge ${rankClass}">${rank}</span></td>
+          <td class="code-cell">${esc(code)}</td>
+          <td class="count-cell">${count.toLocaleString('id-ID')}</td>
+          <td><div class="bar-cell">
+            <div class="bar-wrap"><div class="bar-fill" style="width:${barW}%"></div></div>
+            <span class="pct-label">${pct}%</span>
+          </div></td>
+          <td><button class="btn-del" onclick="deleteCode('${escAttr(code)}')" aria-label="Hapus ${esc(code)}">×</button></td>
+        </tr>`;
+      }).join('');
+    }
+
+    document.getElementById('codeInput').addEventListener('keydown', e => { if (e.key === 'Enter') addCode(); });
+    document.getElementById('countInput').addEventListener('keydown', e => { if (e.key === 'Enter') addCode(); });
+
+    loadData();
+  </script>
+</body>
+</html>
