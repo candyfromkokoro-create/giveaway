@@ -3,248 +3,428 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dominant Code</title>
+  <title>Kokoro & Licentia Giveaway</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #ffffff; --bg-secondary: #f5f5f3; --bg-danger: #fcebeb;
-      --bg-success: #eaf3de; --bg-info: #e6f1fb;
-      --text-primary: #1a1a18; --text-secondary: #6b6b66; --text-tertiary: #9a9994;
-      --text-danger: #a32d2d; --text-success: #3b6d11; --text-info: #185fa5;
-      --border: rgba(0,0,0,0.12); --border-hover: rgba(0,0,0,0.25);
-      --radius-md: 8px; --radius-lg: 12px; --blue: #378ADD;
-      --gold: #FAC775; --gold-text: #412402;
-      --silver: #D3D1C7; --silver-text: #2C2C2A;
-      --bronze: #F5C4B3; --bronze-text: #4A1B0C;
+      --bg-page: linear-gradient(135deg, #FFE3F5 0%, #FDEDFF 50%, #fff0fb 100%);
+      --bg: #ffffff;
+      --bg-secondary: #FFE3F5;
+      --bg-accent: #FDEDFF;
+      --bg-danger: #fce8f0;
+      --text-primary: #3a1a2e;
+      --text-secondary: #9b6b88;
+      --text-tertiary: #c4a0b8;
+      --text-danger: #a32d2d;
+      --text-success: #3b6d11;
+      --border: rgba(255,150,200,0.25);
+      --border-hover: rgba(255,120,180,0.5);
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --pink: #e879a0;
+      --gold: #f5c842; --gold-text: #4a3200;
+      --silver: #d4d0c8; --silver-text: #2c2c2a;
+      --bronze: #f0b48a; --bronze-text: #4a1b0c;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1e1e1c; --bg-secondary: #2a2a28; --bg-danger: #3a1f1f;
-        --bg-success: #1a2e10; --bg-info: #0c2240;
-        --text-primary: #f0ede8; --text-secondary: #a0a09a; --text-tertiary: #6b6b66;
-        --text-danger: #f09595; --text-success: #97c459; --text-info: #85b7eb;
-        --border: rgba(255,255,255,0.12); --border-hover: rgba(255,255,255,0.25);
-        --blue: #5ba3ed;
-        --gold: #d4a050; --gold-text: #faeeda;
-        --silver: #888780; --silver-text: #f1efe8;
-        --bronze: #c07060; --bronze-text: #faece7;
-      }
-    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg-secondary); color: var(--text-primary);
-      min-height: 100vh; padding: 2rem 1rem;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem;
     }
+
     .container { max-width: 680px; margin: 0 auto; }
-    h1 { font-size: 22px; font-weight: 500; margin-bottom: 0.25rem; }
-    .subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 2rem; }
-    .card {
-      background: var(--bg); border: 0.5px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem;
+
+    /* Tab switcher */
+    .tab-switcher {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 6px;
     }
+    .tab-btn {
+      flex: 1; padding: 10px 16px;
+      border: none; border-radius: var(--radius-md);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: all 0.2s; background: transparent; color: var(--text-secondary);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #f472b6, #c084fc);
+      color: #fff; box-shadow: 0 2px 8px rgba(196,132,252,0.3);
+    }
+    .tab-btn:not(.active):hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+    /* Panels */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 1.5rem; }
+    .header h1 { font-size: 26px; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; }
+
+    /* Cards */
+    .info-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem; box-shadow: 0 2px 12px rgba(232,121,160,0.08);
+    }
+
+    .prize-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; }
+    .prize-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .prize-item {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg-secondary); border-radius: var(--radius-md); padding: 10px 14px;
+    }
+    .prize-rank {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; flex-shrink: 0;
+    }
+    .prize-rank.r1 { background: var(--gold); color: var(--gold-text); }
+    .prize-rank.r2 { background: var(--silver); color: var(--silver-text); }
+    .prize-rank.r3 { background: var(--bronze); color: var(--bronze-text); }
+    .prize-rank.r4 { background: #e8d5f5; color: #5a2d8a; }
+    .prize-amount { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .prize-label { font-size: 11px; color: var(--text-secondary); }
+
+    .tc-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; }
+    .tc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
+    .tc-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; position: relative; }
+    .tc-list li::before { content: '⌗'; position: absolute; left: 0; color: var(--pink); font-size: 12px; }
+
+    .poin-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+    .poin-grid { display: flex; flex-direction: column; gap: 5px; }
+    .poin-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-accent); border-radius: 8px; padding: 7px 12px; font-size: 13px;
+    }
+    .poin-row .range { color: var(--text-secondary); }
+    .poin-row .pts { font-weight: 600; color: var(--pink); background: var(--bg-secondary); border-radius: 6px; padding: 2px 10px; font-size: 12px; }
+
+    /* Tracker */
+    .tracker-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.25rem;
+      margin-bottom: 1rem; box-shadow: 0 2px 12px rgba(232,121,160,0.08);
+    }
+
     .admin-bar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 10px 14px; background: var(--bg-secondary);
-      border: 0.5px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1rem;
+      border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1rem;
     }
     .admin-bar-left { display: flex; align-items: center; gap: 8px; font-size: 13px; }
     .status-locked { color: var(--text-secondary); }
     .status-unlocked { color: var(--text-success); }
     .btn-admin {
-      background: none; border: 0.5px solid var(--border-hover);
+      background: #fff; border: 1px solid var(--border-hover);
       border-radius: var(--radius-md); color: var(--text-secondary);
       cursor: pointer; font-size: 12px; padding: 5px 12px;
       display: inline-flex; align-items: center; gap: 5px; transition: background 0.1s;
     }
-    .btn-admin:hover { background: var(--bg); }
+    .btn-admin:hover { background: var(--bg-accent); }
     .btn-admin.active { border-color: var(--text-success); color: var(--text-success); }
+
     .pw-row { display: flex; gap: 8px; margin-bottom: 0.5rem; align-items: center; }
     .pw-row input[type="password"] {
-      flex: 1; background: var(--bg); border: 0.5px solid var(--border);
+      flex: 1; background: #fff; border: 1px solid var(--border);
       border-radius: var(--radius-md); color: var(--text-primary);
       font-size: 14px; height: 36px; padding: 0 12px; outline: none;
     }
-    .pw-row input:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
+    .pw-row input:focus { border-color: var(--pink); box-shadow: 0 0 0 2px rgba(232,121,160,0.15); }
     .pw-error { color: var(--text-danger); font-size: 13px; min-height: 18px; margin-bottom: 0.5rem; }
+
     .input-section { margin-bottom: 1rem; }
     .input-row { display: flex; gap: 8px; margin-bottom: 0.5rem; }
     input[type="text"], input[type="number"] {
-      background: var(--bg); border: 0.5px solid var(--border);
+      background: #fff; border: 1px solid var(--border);
       border-radius: var(--radius-md); color: var(--text-primary);
       font-size: 14px; height: 36px; padding: 0 12px; outline: none; transition: border-color 0.15s;
     }
     input[type="text"] { flex: 1; }
     input[type="number"] { width: 90px; }
-    input:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(55,138,221,0.15); }
+    input:focus { border-color: var(--pink); box-shadow: 0 0 0 2px rgba(232,121,160,0.15); }
     input:disabled { opacity: 0.4; cursor: not-allowed; }
+
     button.btn-primary {
-      background: var(--bg); border: 0.5px solid var(--border-hover);
-      border-radius: var(--radius-md); color: var(--text-primary);
+      background: linear-gradient(135deg, #f472b6, #c084fc);
+      border: none; border-radius: var(--radius-md); color: #fff;
       cursor: pointer; font-size: 14px; height: 36px; padding: 0 16px;
-      display: inline-flex; align-items: center; gap: 6px; transition: background 0.1s; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: opacity 0.1s; white-space: nowrap; font-weight: 500;
     }
-    button.btn-primary:hover:not(:disabled) { background: var(--bg-secondary); }
-    button.btn-primary:active:not(:disabled) { transform: scale(0.98); }
+    button.btn-primary:hover:not(:disabled) { opacity: 0.88; }
     button.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
     .error-msg { color: var(--text-danger); font-size: 13px; min-height: 18px; margin-bottom: 0.75rem; }
+
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem; }
     .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 0.75rem 1rem; }
     .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
-    .stat-val { font-size: 20px; font-weight: 500; }
-    .table-wrap { border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .stat-val { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+
+    .table-wrap { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
     th {
       background: var(--bg-secondary); color: var(--text-secondary);
       font-size: 12px; font-weight: 500; padding: 8px 14px;
-      text-align: left; border-bottom: 0.5px solid var(--border);
+      text-align: left; border-bottom: 1px solid var(--border);
     }
-    td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--bg-secondary); }
+    tr:hover td { background: #fff8fd; }
     th:nth-child(1), td:nth-child(1) { width: 52px; }
     th:nth-child(2), td:nth-child(2) { width: 100px; }
     th:nth-child(3), td:nth-child(3) { width: 70px; }
     th:nth-child(5), td:nth-child(5) { width: 40px; }
+
     .rank-badge {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 500;
+      width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 600;
     }
     .rank-1 { background: var(--gold); color: var(--gold-text); }
     .rank-2 { background: var(--silver); color: var(--silver-text); }
     .rank-3 { background: var(--bronze); color: var(--bronze-text); }
     .rank-n { background: var(--bg-secondary); color: var(--text-secondary); }
-    .code-cell { font-family: monospace; font-size: 14px; }
-    .count-cell { font-weight: 500; font-size: 15px; }
+
+    .code-cell { font-family: monospace; font-size: 14px; font-weight: 500; }
+    .count-cell { font-weight: 600; font-size: 15px; color: var(--pink); }
     .bar-cell { display: flex; align-items: center; gap: 8px; }
     .bar-wrap { flex: 1; height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--blue); border-radius: 4px; transition: width 0.3s ease; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #c084fc); border-radius: 4px; transition: width 0.3s ease; }
     .pct-label { font-size: 12px; color: var(--text-secondary); min-width: 34px; }
+
     .btn-del {
       background: none; border: none; cursor: pointer;
       color: var(--text-tertiary); font-size: 18px; line-height: 1; padding: 2px 4px; border-radius: 4px;
     }
     .btn-del:hover { background: var(--bg-danger); color: var(--text-danger); }
     .btn-del:disabled { opacity: 0; pointer-events: none; }
+
     .empty-msg { text-align: center; padding: 2.5rem; color: var(--text-secondary); font-size: 14px; }
+    .loading-msg { text-align: center; padding: 2rem; color: var(--text-secondary); font-size: 14px; }
+
     .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; }
     .btn-clear {
-      background: none; border: 0.5px solid var(--border-hover);
+      background: none; border: 1px solid var(--border-hover);
       border-radius: var(--radius-md); color: var(--text-secondary);
       cursor: pointer; font-size: 13px; padding: 6px 14px;
       display: inline-flex; align-items: center; gap: 6px;
     }
-    .btn-clear:hover:not(:disabled) { background: var(--bg-secondary); }
-    .btn-clear:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-clear:hover { background: var(--bg-secondary); }
     .btn-refresh {
-      background: none; border: 0.5px solid var(--border-hover);
+      background: none; border: 1px solid var(--border-hover);
       border-radius: var(--radius-md); color: var(--text-secondary);
       cursor: pointer; font-size: 13px; padding: 6px 14px;
       display: inline-flex; align-items: center; gap: 6px;
     }
     .btn-refresh:hover { background: var(--bg-secondary); }
-    .badge-publik {
-      display: inline-flex; align-items: center; gap: 4px;
-      background: var(--bg-info); color: var(--text-info);
-      font-size: 11px; padding: 3px 8px; border-radius: var(--radius-md); margin-left: 8px;
-    }
-    .loading-msg { text-align: center; padding: 2rem; color: var(--text-secondary); font-size: 14px; }
-    .sync-msg { font-size: 12px; color: var(--text-tertiary); margin-top: 6px; }
-    footer { text-align: center; font-size: 12px; color: var(--text-tertiary); margin-top: 2rem; }
-    .hidden { display: none !important; }
+    .sync-msg { font-size: 12px; color: var(--text-tertiary); }
+
+    footer { text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 2rem; }
+    footer a { color: var(--pink); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinning { animation: spin 1s linear infinite; display: inline-block; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Dominant Code <span class="badge-publik"><i class="ti ti-eye" aria-hidden="true"></i> Publik</span></h1>
-    <p class="subtitle">Ayo cek peringkat mu! — made by @hallokokoro</p>
 
-    <div class="card">
-      <div class="admin-bar">
-        <div class="admin-bar-left">
-          <i class="ti ti-lock" id="lockIcon" aria-hidden="true" style="font-size:16px"></i>
-          <span id="adminStatus" class="status-locked">Mode publik — hanya bisa melihat</span>
-        </div>
-        <button class="btn-admin" id="btnAdminToggle" onclick="toggleAdminPrompt()">
-          <i class="ti ti-shield" aria-hidden="true"></i>
-          <span id="btnAdminLabel">Masuk sebagai Admin</span>
-        </button>
+    <!-- Tab Switcher -->
+    <div class="tab-switcher">
+      <button class="tab-btn active" onclick="switchTab('kokoro')">🎀 Kokoro Giveaway</button>
+      <button class="tab-btn" onclick="switchTab('licentia')">🌸 Licentia Giveaway</button>
+    </div>
+
+    <!-- ===== KOKORO GIVEAWAY ===== -->
+    <div class="tab-panel active" id="panel-kokoro">
+      <div class="header">
+        <h1>🎀 Kokoro Giveaway 🎀</h1>
       </div>
 
-      <div id="pwSection" class="hidden">
-        <div class="pw-row">
-          <input type="password" id="pwInput" placeholder="Masukkan password admin..." />
-          <button class="btn-primary" onclick="submitPassword()">
-            <i class="ti ti-arrow-right" aria-hidden="true"></i> Masuk
+      <div class="info-card">
+        <div class="prize-title">hadiah! ꒰ ˆ ꒵ ˆ꒱ ⟡</div>
+        <div class="prize-list">
+          <div class="prize-item"><div class="prize-rank r1">1</div><div><div class="prize-amount">Rp 40.000</div><div class="prize-label">Peringkat 1</div></div></div>
+          <div class="prize-item"><div class="prize-rank r2">2</div><div><div class="prize-amount">Rp 30.000</div><div class="prize-label">Peringkat 2</div></div></div>
+          <div class="prize-item"><div class="prize-rank r3">3</div><div><div class="prize-amount">Rp 20.000</div><div class="prize-label">Peringkat 3</div></div></div>
+          <div class="prize-item"><div class="prize-rank r4">4</div><div><div class="prize-amount">Rp 10.000</div><div class="prize-label">Peringkat 4</div></div></div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="tc-title">💭 ໒ັ term and condition</div>
+        <ul class="tc-list">
+          <li>setiap kali kamu melakukan transaksi di kokoro/licentia, kamu akan mendapatkan poin</li>
+          <li>semakin banyak poin kamu, semakin tinggi peringkat kamu!</li>
+          <li>pemenang give away akan diumumkan tanggal 1 di bulan berikutnya</li>
+          <li>code adalah 3-5 digit terakhir nomor whatsapp reseller</li>
+          <li>poin dihitung berdasarkan orderan reseller selama 1 bulan</li>
+        </ul>
+        <div class="poin-title">꒱ Sistem Poin</div>
+        <div class="poin-grid">
+          <div class="poin-row"><span class="range">Transaksi 100p – 5k</span><span class="pts">1 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi 6k – 30k</span><span class="pts">2 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi 31k – 50k</span><span class="pts">3 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi 50k – 100k</span><span class="pts">4 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi diatas 100k</span><span class="pts">5 poin</span></div>
+        </div>
+      </div>
+
+      <div class="tracker-card">
+        <div class="admin-bar">
+          <div class="admin-bar-left">
+            <i class="ti ti-lock" id="lockIcon-kokoro" style="font-size:16px"></i>
+            <span id="adminStatus-kokoro" class="status-locked">Mode publik — hanya bisa melihat</span>
+          </div>
+          <button class="btn-admin" id="btnAdminToggle-kokoro" onclick="toggleAdmin('kokoro')">
+            <i class="ti ti-shield"></i> <span id="btnAdminLabel-kokoro">Masuk sebagai Admin</span>
           </button>
         </div>
-        <div class="pw-error" id="pwError"></div>
-      </div>
-
-      <div id="inputSection" class="input-section hidden">
-        <div class="input-row">
-          <input type="text" id="codeInput" placeholder="Masukkan kode (misal: 8032)" maxlength="30" />
-          <input type="number" id="countInput" placeholder="Jumlah" min="1" value="1" />
-          <button class="btn-primary" id="btnTambah" onclick="addCode()">
-            <i class="ti ti-plus" aria-hidden="true"></i> Tambah
-          </button>
+        <div id="pwSection-kokoro" class="hidden">
+          <div class="pw-row">
+            <input type="password" id="pwInput-kokoro" placeholder="Masukkan password admin..." />
+            <button class="btn-primary" onclick="submitPw('kokoro')"><i class="ti ti-arrow-right"></i> Masuk</button>
+          </div>
+          <div class="pw-error" id="pwError-kokoro"></div>
         </div>
-        <div class="error-msg" id="errMsg"></div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total kode unik</div>
-          <div class="stat-val" id="statUnique">—</div>
+        <div id="inputSection-kokoro" class="input-section hidden">
+          <div class="input-row">
+            <input type="text" id="codeInput-kokoro" placeholder="Kode (3-5 digit terakhir WA)" maxlength="10" />
+            <input type="number" id="countInput-kokoro" placeholder="Poin" min="1" value="1" />
+            <button class="btn-primary" id="btnTambah-kokoro" onclick="addCode('kokoro')"><i class="ti ti-plus"></i> Tambah</button>
+          </div>
+          <div class="error-msg" id="errMsg-kokoro"></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Total entri</div>
-          <div class="stat-val" id="statTotal">—</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Total peserta</div><div class="stat-val" id="statUnique-kokoro">—</div></div>
+          <div class="stat-card"><div class="stat-label">Total poin</div><div class="stat-val" id="statTotal-kokoro">—</div></div>
+          <div class="stat-card"><div class="stat-label">Peringkat 1</div><div class="stat-val" id="statTop-kokoro">—</div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Kode teratas</div>
-          <div class="stat-val" id="statTop">—</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rank</th><th>Kode</th><th>Poin</th><th>Proporsi</th><th></th></tr></thead>
+            <tbody id="tableBody-kokoro">
+              <tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning"></i> Memuat data...</td></tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th><th>Kode</th><th>Jumlah</th><th>Proporsi</th><th></th>
-            </tr>
-          </thead>
-          <tbody id="tableBody">
-            <tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning" aria-hidden="true"></i> Memuat data...</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="action-row">
-        <button class="btn-refresh" onclick="fetchData()">
-          <i class="ti ti-refresh" aria-hidden="true"></i> Refresh
-        </button>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span class="sync-msg" id="syncMsg"></span>
-          <button class="btn-clear hidden" id="btnClear" onclick="clearAll()">
-            <i class="ti ti-trash" aria-hidden="true"></i> Hapus semua
-          </button>
+        <div class="action-row">
+          <button class="btn-refresh" onclick="fetchData('kokoro')"><i class="ti ti-refresh"></i> Refresh</button>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sync-msg" id="syncMsg-kokoro"></span>
+            <button class="btn-clear hidden" id="btnClear-kokoro" onclick="clearAll('kokoro')"><i class="ti ti-trash"></i> Hapus semua</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <footer>Data tersimpan di Google Sheets &middot; Tampilan ranking terbuka untuk publik</footer>
+    <!-- ===== LICENTIA GIVEAWAY ===== -->
+    <div class="tab-panel" id="panel-licentia">
+      <div class="header">
+        <h1>🌸 Licentia Giveaway 🌸</h1>
+      </div>
+
+      <div class="info-card">
+        <div class="prize-title">hadiah! ꒰ ˆ ꒵ ˆ꒱ ⟡</div>
+        <div class="prize-list">
+          <div class="prize-item"><div class="prize-rank r1">1</div><div><div class="prize-amount">Rp 40.000</div><div class="prize-label">Peringkat 1</div></div></div>
+          <div class="prize-item"><div class="prize-rank r2">2</div><div><div class="prize-amount">Rp 30.000</div><div class="prize-label">Peringkat 2</div></div></div>
+          <div class="prize-item"><div class="prize-rank r3">3</div><div><div class="prize-amount">Rp 20.000</div><div class="prize-label">Peringkat 3</div></div></div>
+          <div class="prize-item"><div class="prize-rank r4">4</div><div><div class="prize-amount">Rp 10.000</div><div class="prize-label">Peringkat 4</div></div></div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="tc-title">💭 ໒ັ term and condition</div>
+        <ul class="tc-list">
+          <li>setiap kali kamu melakukan transaksi di kokoro/licentia, kamu akan mendapatkan poin</li>
+          <li>semakin banyak poin kamu, semakin tinggi peringkat kamu!</li>
+          <li>pemenang give away akan diumumkan tanggal 1 di bulan berikutnya</li>
+          <li>code adalah 3-5 digit terakhir nomor whatsapp reseller</li>
+          <li>poin dihitung berdasarkan orderan reseller selama 1 bulan</li>
+        </ul>
+        <div class="poin-title">꒱ Sistem Poin</div>
+        <div class="poin-grid">
+          <div class="poin-row"><span class="range">Transaksi 100p – 5k</span><span class="pts">1 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi 6k – 30k</span><span class="pts">2 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi 31k – 50k</span><span class="pts">3 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi 50k – 100k</span><span class="pts">4 poin</span></div>
+          <div class="poin-row"><span class="range">Transaksi diatas 100k</span><span class="pts">5 poin</span></div>
+        </div>
+      </div>
+
+      <div class="tracker-card">
+        <div class="admin-bar">
+          <div class="admin-bar-left">
+            <i class="ti ti-lock" id="lockIcon-licentia" style="font-size:16px"></i>
+            <span id="adminStatus-licentia" class="status-locked">Mode publik — hanya bisa melihat</span>
+          </div>
+          <button class="btn-admin" id="btnAdminToggle-licentia" onclick="toggleAdmin('licentia')">
+            <i class="ti ti-shield"></i> <span id="btnAdminLabel-licentia">Masuk sebagai Admin</span>
+          </button>
+        </div>
+        <div id="pwSection-licentia" class="hidden">
+          <div class="pw-row">
+            <input type="password" id="pwInput-licentia" placeholder="Masukkan password admin..." />
+            <button class="btn-primary" onclick="submitPw('licentia')"><i class="ti ti-arrow-right"></i> Masuk</button>
+          </div>
+          <div class="pw-error" id="pwError-licentia"></div>
+        </div>
+        <div id="inputSection-licentia" class="input-section hidden">
+          <div class="input-row">
+            <input type="text" id="codeInput-licentia" placeholder="Kode (3-5 digit terakhir WA)" maxlength="10" />
+            <input type="number" id="countInput-licentia" placeholder="Poin" min="1" value="1" />
+            <button class="btn-primary" id="btnTambah-licentia" onclick="addCode('licentia')"><i class="ti ti-plus"></i> Tambah</button>
+          </div>
+          <div class="error-msg" id="errMsg-licentia"></div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Total peserta</div><div class="stat-val" id="statUnique-licentia">—</div></div>
+          <div class="stat-card"><div class="stat-label">Total poin</div><div class="stat-val" id="statTotal-licentia">—</div></div>
+          <div class="stat-card"><div class="stat-label">Peringkat 1</div><div class="stat-val" id="statTop-licentia">—</div></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rank</th><th>Kode</th><th>Poin</th><th>Proporsi</th><th></th></tr></thead>
+            <tbody id="tableBody-licentia">
+              <tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning"></i> Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="action-row">
+          <button class="btn-refresh" onclick="fetchData('licentia')"><i class="ti ti-refresh"></i> Refresh</button>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="sync-msg" id="syncMsg-licentia"></span>
+            <button class="btn-clear hidden" id="btnClear-licentia" onclick="clearAll('licentia')"><i class="ti ti-trash"></i> Hapus semua</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>made by <a href="https://t.me/hallokokoro" target="_blank">@hallokokoro</a> on telegram</footer>
   </div>
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxmnSAy8WzZ_vQlP8YtVb8pTbjutrRqdblL7CSQmUTYkWngeDdWC80EtwOImBC8wbvr/exec';
     const CORRECT_PW = 'candylucu';
+    const SHEET_MAP = { kokoro: 'Giveaway1', licentia: 'Giveaway2' };
 
-    let data = {};
-    let isAdmin = false;
-    let pwVisible = false;
+    let dataStore = { kokoro: {}, licentia: {} };
+    let adminState = { kokoro: false, licentia: false };
+    let pwVisible = { kokoro: false, licentia: false };
+
+    function g(id) { return document.getElementById(id); }
 
     function api(params) {
       const url = new URL(API_URL);
@@ -252,167 +432,156 @@
       return fetch(url.toString()).then(r => r.json());
     }
 
-    async function fetchData() {
-      document.getElementById('tableBody').innerHTML =
-        '<tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning" aria-hidden="true"></i> Memuat data...</td></tr>';
-      document.getElementById('syncMsg').textContent = '';
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      g('panel-' + tab).classList.add('active');
+      document.querySelectorAll('.tab-btn')[tab === 'kokoro' ? 0 : 1].classList.add('active');
+    }
+
+    async function fetchData(tab) {
+      g('tableBody-' + tab).innerHTML = '<tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning"></i> Memuat data...</td></tr>';
+      g('syncMsg-' + tab).textContent = '';
       try {
-        const res = await api({ action: 'get' });
-        data = res.data || {};
-        render();
+        const res = await api({ action: 'get', sheet: SHEET_MAP[tab] });
+        dataStore[tab] = res.data || {};
+        render(tab);
         const now = new Date();
-        document.getElementById('syncMsg').textContent =
-          'Diperbarui ' + now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+        g('syncMsg-' + tab).textContent = 'Diperbarui ' + now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
       } catch(e) {
-        document.getElementById('tableBody').innerHTML =
-          '<tr><td colspan="5" class="empty-msg" style="color:var(--text-danger)">Gagal memuat data. Coba refresh.</td></tr>';
+        g('tableBody-' + tab).innerHTML = '<tr><td colspan="5" class="empty-msg" style="color:var(--text-danger)">Gagal memuat data. Coba refresh.</td></tr>';
       }
     }
 
-    async function addCode() {
-      if (!isAdmin) return;
-      const code = document.getElementById('codeInput').value.trim();
-      const count = parseInt(document.getElementById('countInput').value) || 1;
-      const err = document.getElementById('errMsg');
+    async function addCode(tab) {
+      if (!adminState[tab]) return;
+      const code = g('codeInput-' + tab).value.trim();
+      const count = parseInt(g('countInput-' + tab).value) || 1;
+      const err = g('errMsg-' + tab);
       if (!code) { err.textContent = 'Kode tidak boleh kosong.'; return; }
-      if (count < 1 || count > 9999) { err.textContent = 'Jumlah harus antara 1 – 9999.'; return; }
+      if (count < 1 || count > 9999) { err.textContent = 'Poin harus antara 1 – 9999.'; return; }
       err.textContent = '';
-
-      const newCount = (data[code] || 0) + count;
-      setLoading(true);
+      const newCount = (dataStore[tab][code] || 0) + count;
+      g('btnTambah-' + tab).disabled = true;
       try {
-        await api({ action: 'set', code, count: newCount });
-        data[code] = newCount;
-        render();
-        document.getElementById('codeInput').value = '';
-        document.getElementById('countInput').value = '1';
-        document.getElementById('codeInput').focus();
-        document.getElementById('syncMsg').textContent = 'Tersimpan ✓';
-      } catch(e) {
-        err.textContent = 'Gagal menyimpan. Coba lagi.';
-      }
-      setLoading(false);
+        await api({ action: 'set', sheet: SHEET_MAP[tab], code, count: newCount });
+        dataStore[tab][code] = newCount;
+        render(tab);
+        g('codeInput-' + tab).value = '';
+        g('countInput-' + tab).value = '1';
+        g('codeInput-' + tab).focus();
+        g('syncMsg-' + tab).textContent = 'Tersimpan ✓';
+      } catch(e) { err.textContent = 'Gagal menyimpan. Coba lagi.'; }
+      g('btnTambah-' + tab).disabled = false;
     }
 
-    async function deleteCode(code) {
-      if (!isAdmin) return;
+    async function deleteCode(tab, code) {
+      if (!adminState[tab]) return;
       if (!confirm('Hapus kode ' + code + '?')) return;
-      setLoading(true);
       try {
-        await api({ action: 'delete', code });
-        delete data[code];
-        render();
-        document.getElementById('syncMsg').textContent = 'Dihapus ✓';
-      } catch(e) {
-        alert('Gagal menghapus. Coba lagi.');
-      }
-      setLoading(false);
+        await api({ action: 'delete', sheet: SHEET_MAP[tab], code });
+        delete dataStore[tab][code];
+        render(tab);
+        g('syncMsg-' + tab).textContent = 'Dihapus ✓';
+      } catch(e) { alert('Gagal menghapus. Coba lagi.'); }
     }
 
-    async function clearAll() {
-      if (!isAdmin) return;
-      if (!Object.keys(data).length) return;
+    async function clearAll(tab) {
+      if (!adminState[tab]) return;
+      if (!Object.keys(dataStore[tab]).length) return;
       if (!confirm('Hapus SEMUA data? Tindakan ini tidak bisa dibatalkan.')) return;
-      setLoading(true);
       try {
-        await api({ action: 'clear' });
-        data = {};
-        render();
-        document.getElementById('syncMsg').textContent = 'Semua data dihapus ✓';
-      } catch(e) {
-        alert('Gagal menghapus. Coba lagi.');
+        await api({ action: 'clear', sheet: SHEET_MAP[tab] });
+        dataStore[tab] = {};
+        render(tab);
+        g('syncMsg-' + tab).textContent = 'Semua data dihapus ✓';
+      } catch(e) { alert('Gagal menghapus. Coba lagi.'); }
+    }
+
+    function toggleAdmin(tab) {
+      if (adminState[tab]) {
+        adminState[tab] = false; pwVisible[tab] = false;
+        g('pwSection-' + tab).classList.add('hidden');
+        g('inputSection-' + tab).classList.add('hidden');
+        g('btnClear-' + tab).classList.add('hidden');
+        g('lockIcon-' + tab).className = 'ti ti-lock';
+        g('adminStatus-' + tab).textContent = 'Mode publik — hanya bisa melihat';
+        g('adminStatus-' + tab).className = 'status-locked';
+        g('btnAdminLabel-' + tab).textContent = 'Masuk sebagai Admin';
+        g('btnAdminToggle-' + tab).classList.remove('active');
+        render(tab); return;
       }
-      setLoading(false);
+      pwVisible[tab] = !pwVisible[tab];
+      g('pwSection-' + tab).classList.toggle('hidden', !pwVisible[tab]);
+      if (pwVisible[tab]) { g('pwInput-' + tab).focus(); g('pwError-' + tab).textContent = ''; }
     }
 
-    function setLoading(on) {
-      document.getElementById('btnTambah').disabled = on;
-    }
-
-    function toggleAdminPrompt() {
-      if (isAdmin) {
-        isAdmin = false; pwVisible = false;
-        document.getElementById('pwSection').classList.add('hidden');
-        document.getElementById('inputSection').classList.add('hidden');
-        document.getElementById('btnClear').classList.add('hidden');
-        document.getElementById('lockIcon').className = 'ti ti-lock';
-        document.getElementById('adminStatus').textContent = 'Mode publik — hanya bisa melihat';
-        document.getElementById('adminStatus').className = 'status-locked';
-        document.getElementById('btnAdminLabel').textContent = 'Masuk sebagai Admin';
-        document.getElementById('btnAdminToggle').classList.remove('active');
-        document.getElementById('pwInput').value = '';
-        document.getElementById('pwError').textContent = '';
-        render(); return;
-      }
-      pwVisible = !pwVisible;
-      document.getElementById('pwSection').classList.toggle('hidden', !pwVisible);
-      if (pwVisible) { document.getElementById('pwInput').focus(); document.getElementById('pwError').textContent = ''; }
-    }
-
-    function submitPassword() {
-      const val = document.getElementById('pwInput').value;
+    function submitPw(tab) {
+      const val = g('pwInput-' + tab).value;
       if (val === CORRECT_PW) {
-        isAdmin = true; pwVisible = false;
-        document.getElementById('pwSection').classList.add('hidden');
-        document.getElementById('inputSection').classList.remove('hidden');
-        document.getElementById('btnClear').classList.remove('hidden');
-        document.getElementById('lockIcon').className = 'ti ti-shield-check';
-        document.getElementById('adminStatus').textContent = 'Mode admin — dapat menambah & menghapus data';
-        document.getElementById('adminStatus').className = 'status-unlocked';
-        document.getElementById('btnAdminLabel').textContent = 'Keluar Admin';
-        document.getElementById('btnAdminToggle').classList.add('active');
-        document.getElementById('pwInput').value = '';
-        document.getElementById('pwError').textContent = '';
-        document.getElementById('codeInput').focus();
-        render();
+        adminState[tab] = true; pwVisible[tab] = false;
+        g('pwSection-' + tab).classList.add('hidden');
+        g('inputSection-' + tab).classList.remove('hidden');
+        g('btnClear-' + tab).classList.remove('hidden');
+        g('lockIcon-' + tab).className = 'ti ti-shield-check';
+        g('adminStatus-' + tab).textContent = 'Mode admin — dapat menambah & menghapus data';
+        g('adminStatus-' + tab).className = 'status-unlocked';
+        g('btnAdminLabel-' + tab).textContent = 'Keluar Admin';
+        g('btnAdminToggle-' + tab).classList.add('active');
+        g('pwInput-' + tab).value = '';
+        g('pwError-' + tab).textContent = '';
+        g('codeInput-' + tab).focus();
+        render(tab);
       } else {
-        document.getElementById('pwError').textContent = 'Password salah. Coba lagi.';
-        document.getElementById('pwInput').value = '';
-        document.getElementById('pwInput').focus();
+        g('pwError-' + tab).textContent = 'Password salah. Coba lagi.';
+        g('pwInput-' + tab).value = '';
+        g('pwInput-' + tab).focus();
       }
     }
 
     function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
     function escAttr(s) { return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 
-    function render() {
-      const sorted = Object.entries(data).sort((a, b) => b[1] - a[1]);
-      const total = sorted.reduce((s, [,v]) => s + Number(v), 0);
+    function render(tab) {
+      const data = dataStore[tab];
+      const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]);
+      const total = sorted.reduce((s,[,v]) => s+Number(v), 0);
       const max = sorted.length ? Number(sorted[0][1]) : 1;
+      const isAdm = adminState[tab];
 
-      document.getElementById('statUnique').textContent = sorted.length;
-      document.getElementById('statTotal').textContent = total.toLocaleString('id-ID');
-      document.getElementById('statTop').textContent = sorted.length ? sorted[0][0] : '—';
+      g('statUnique-' + tab).textContent = sorted.length;
+      g('statTotal-' + tab).textContent = total.toLocaleString('id-ID');
+      g('statTop-' + tab).textContent = sorted.length ? sorted[0][0] : '—';
 
-      const tbody = document.getElementById('tableBody');
-      if (!sorted.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">Belum ada data.</td></tr>';
-        return;
-      }
+      const tbody = g('tableBody-' + tab);
+      if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">Belum ada data. 🌸</td></tr>'; return; }
       tbody.innerHTML = sorted.map(([code, count], i) => {
-        const rank = i + 1;
-        const c = Number(count);
-        const pct = total ? Math.round(c / total * 100) : 0;
-        const barW = Math.round(c / max * 100);
-        const rankClass = rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-n';
+        const rank = i+1, c = Number(count);
+        const pct = total ? Math.round(c/total*100) : 0;
+        const barW = Math.round(c/max*100);
+        const rc = rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-n';
         return `<tr>
-          <td><span class="rank-badge ${rankClass}">${rank}</span></td>
+          <td><span class="rank-badge ${rc}">${rank}</span></td>
           <td class="code-cell">${esc(code)}</td>
           <td class="count-cell">${c.toLocaleString('id-ID')}</td>
-          <td><div class="bar-cell">
-            <div class="bar-wrap"><div class="bar-fill" style="width:${barW}%"></div></div>
-            <span class="pct-label">${pct}%</span>
-          </div></td>
-          <td><button class="btn-del" onclick="deleteCode('${escAttr(code)}')" ${isAdmin?'':'disabled'} aria-label="Hapus ${esc(code)}">×</button></td>
+          <td><div class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:${barW}%"></div></div><span class="pct-label">${pct}%</span></div></td>
+          <td><button class="btn-del" onclick="deleteCode('${tab}','${escAttr(code)}')" ${isAdm?'':'disabled'}>×</button></td>
         </tr>`;
       }).join('');
     }
 
-    document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitPassword(); });
-    document.getElementById('codeInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') addCode(); });
-    document.getElementById('countInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') addCode(); });
+    // Enter key support
+    ['kokoro','licentia'].forEach(tab => {
+      setTimeout(() => {
+        g('pwInput-'+tab)?.addEventListener('keydown', e => { if(e.key==='Enter') submitPw(tab); });
+        g('codeInput-'+tab)?.addEventListener('keydown', e => { if(e.key==='Enter') addCode(tab); });
+        g('countInput-'+tab)?.addEventListener('keydown', e => { if(e.key==='Enter') addCode(tab); });
+      }, 100);
+    });
 
-    fetchData();
+    // Load both
+    fetchData('kokoro');
+    fetchData('licentia');
   </script>
 </body>
 </html>
