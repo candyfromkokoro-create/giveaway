@@ -3,265 +3,423 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kokoro & Licentia Giveaway</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/tabler-icons.min.css" />
+  <title>Kokoro Giveaway</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg-page: linear-gradient(135deg, #FFE3F5 0%, #FDEDFF 50%, #fff0fb 100%);
-      --bg: #ffffff;
-      --bg-secondary: #FFE3F5;
-      --bg-accent: #FDEDFF;
-      --bg-danger: #fce8f0;
-      --text-primary: #3a1a2e;
-      --text-secondary: #9b6b88;
-      --text-tertiary: #c4a0b8;
-      --text-danger: #a32d2d;
-      --text-success: #3b6d11;
-      --border: rgba(255,150,200,0.25);
-      --border-hover: rgba(255,120,180,0.5);
-      --radius-md: 10px;
-      --radius-lg: 16px;
-      --pink: #e879a0;
-      --gold: #f5c842; --gold-text: #4a3200;
-      --silver: #d4d0c8; --silver-text: #2c2c2a;
-      --bronze: #f0b48a; --bronze-text: #4a1b0c;
-    }
-
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg-page);
-      color: var(--text-primary);
+      font-family: 'Josefin Sans', sans-serif;
+      background: linear-gradient(160deg, #fdf0fa, #f4eafc);
       min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
       padding: 2rem 1rem 3rem;
     }
 
-    .container { max-width: 680px; margin: 0 auto; }
+    /* PAGES */
+    .page { display: none; width: 100%; max-width: 480px; }
+    .page.active { display: flex; flex-direction: column; align-items: center; }
 
-    /* Tab switcher */
+    /* ===== ARCADE ===== */
+    .arcade-body { width: 100%; max-width: 300px; position: relative; }
+
+    .marquee {
+      background: linear-gradient(135deg, #f0aed0, #c8aee8);
+      border-radius: 20px 20px 0 0;
+      border: 2px solid #d898c8; border-bottom: none;
+      padding: 10px 16px 8px; text-align: center;
+    }
+    .marquee-lights { display: flex; justify-content: center; gap: 5px; margin-bottom: 6px; }
+    .mlight { width: 7px; height: 7px; border-radius: 50%; background: white; opacity: 0.85; }
+    .mlight:nth-child(even) { background: #ffe8f8; }
+    .marquee-title { font-family: 'Fredoka One', cursive; font-size: 26px; color: white; text-shadow: 1px 2px 0 rgba(160,80,140,0.25); line-height: 1; }
+    .marquee-sub { font-size: 10px; color: rgba(255,255,255,0.8); letter-spacing: 2px; margin-top: 3px; }
+
+    .cabinet {
+      background: linear-gradient(180deg, #fef0fa, #f5e8fe);
+      border: 2px solid #e8b8d8; border-top: none; border-bottom: none;
+      padding: 0 14px; position: relative;
+    }
+    .side-left, .side-right {
+      position: absolute; top: 15%; width: 7px; height: 65%;
+      background: linear-gradient(180deg, #f8e0f0, #eed8fc);
+      border: 1px solid #e0b8d0; border-radius: 4px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 4px; padding: 6px 0;
+    }
+    .side-left { left: -9px; }
+    .side-right { right: -9px; }
+    .side-dot { width: 3px; height: 3px; border-radius: 50%; background: #f8d0e8; opacity: 0.8; }
+
+    .screen-bezel {
+      background: #dfc0f0; border-radius: 12px; padding: 5px;
+      margin: 12px 0 8px; border: 2px solid #cca8e0;
+    }
+    .screen {
+      background: linear-gradient(160deg, #fff8fe, #f8f0fe);
+      border-radius: 8px; padding: 10px 8px; border: 1px solid #ead8f8;
+    }
+    .screen-header {
+      text-align: center; margin-bottom: 8px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 14px; color: #c080d8; letter-spacing: 1px;
+    }
+    .prize-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 8px; }
+    .prize-box {
+      background: white; border-radius: 8px; border: 1px solid #f8c8e8;
+      overflow: hidden; aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prize-box:nth-child(2) { border-color: #e0d0f8; }
+    .prize-box img { width: 100%; height: 100%; object-fit: cover; }
+
+    .ticker {
+      background: #f0e0fc; border-radius: 8px; padding: 6px 10px;
+      text-align: center; border: 1px solid #dfc8f0;
+    }
+    .ticker-title { font-family: 'Fredoka One', cursive; font-size: 11px; color: #9060b8; letter-spacing: 1px; }
+    .ticker-date { color: #b888d0; font-size: 9px; margin-top: 2px; }
+
+    .speakers { display: flex; justify-content: space-between; padding: 4px 0; margin: 2px 0; }
+    .speaker { display: flex; flex-direction: column; gap: 3px; }
+    .speaker-line { height: 2px; background: #e0b8d0; border-radius: 1px; opacity: 0.5; }
+
+    .control-panel {
+      background: linear-gradient(180deg, #feeaf8, #f5e4fe);
+      border: 2px solid #e8b8d8; border-top: 1.5px solid #f0d0e8; border-bottom: none;
+      padding: 14px 16px 18px;
+    }
+    .controls-layout { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+    .joystick { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .j-ball {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #f8e8fe, #c090e0);
+      border: 2px solid #a878d0; box-shadow: 0 3px 0 rgba(160,100,200,0.2);
+      z-index: 2; position: relative;
+    }
+    .j-stick {
+      width: 8px; height: 22px;
+      background: linear-gradient(90deg, #d8b0f0, #e8d0f8);
+      border-radius: 0 0 4px 4px; border: 1.5px solid #c098e0; border-top: none;
+      margin-top: -2px; z-index: 1;
+    }
+    .j-gate {
+      width: 40px; height: 11px;
+      background: linear-gradient(180deg, #d8b8f0, #c8a8e0);
+      border-radius: 6px; border: 1.5px solid #b898d0;
+      margin-top: -2px; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .j-gate-hole { width: 16px; height: 4px; background: #a888c8; border-radius: 2px; }
+
+    .btn-group { flex: 1; display: flex; flex-direction: column; gap: 9px; }
+    .abtn-outer { width: 100%; background: rgba(200,160,220,0.12); border-radius: 50px; padding: 3px; }
+    .abtn {
+      width: 100%; padding: 10px 14px; border: none; border-radius: 50px;
+      font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 1px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      transition: transform 0.1s;
+    }
+    .abtn-kokoro {
+      background: #f080b8; color: white;
+      box-shadow: 0 4px 0 #c05888, inset 0 2px 3px rgba(255,255,255,0.3);
+      border: 1.5px solid #e070a8;
+    }
+    .abtn-licentia {
+      background: #a868d8; color: white;
+      box-shadow: 0 4px 0 #7848a8, inset 0 2px 3px rgba(255,255,255,0.25);
+      border: 1.5px solid #9858c8;
+    }
+    .abtn:active { transform: translateY(3px); }
+    .abtn-kokoro:active { box-shadow: 0 1px 0 #c05888; }
+    .abtn-licentia:active { box-shadow: 0 1px 0 #7848a8; }
+    .btn-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); flex-shrink: 0; }
+
+    .cabinet-bottom {
+      background: linear-gradient(180deg, #f5e4fe, #eedcf8);
+      border: 2px solid #e8b8d8; border-top: none;
+      border-radius: 0 0 16px 16px; padding: 7px 14px 9px; text-align: center;
+    }
+    .cabinet-footer { font-size: 9px; color: #c0a0d0; letter-spacing: 1px; }
+
+    /* ===== GIVEAWAY TABS ===== */
+    .giveaway-wrap { width: 100%; max-width: 480px; }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #f0e4fc; border: none; border-radius: 50px;
+      padding: 8px 18px; font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px; color: #9060b8; cursor: pointer;
+      margin-bottom: 1rem; letter-spacing: 1px; transition: background 0.15s;
+    }
+    .back-btn:hover { background: #e4d0f8; }
+
     .tab-switcher {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 1.5rem;
-      background: rgba(255,255,255,0.6);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 6px;
+      display: flex; gap: 8px; margin-bottom: 1.25rem;
+      background: rgba(255,255,255,0.6); border: 1px solid #f4c0dc;
+      border-radius: 18px; padding: 5px;
     }
     .tab-btn {
-      flex: 1; padding: 10px 16px;
-      border: none; border-radius: var(--radius-md);
-      font-size: 14px; font-weight: 500; cursor: pointer;
-      transition: all 0.2s; background: transparent; color: var(--text-secondary);
+      flex: 1; padding: 9px; border: none; border-radius: 14px;
+      font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 600;
+      letter-spacing: 1px; cursor: pointer; transition: all 0.2s;
+      background: transparent; color: #a07ab8;
     }
-    .tab-btn.active {
-      background: linear-gradient(135deg, #f472b6, #c084fc);
-      color: #fff; box-shadow: 0 2px 8px rgba(196,132,252,0.3);
-    }
-    .tab-btn:not(.active):hover { background: var(--bg-secondary); color: var(--text-primary); }
+    .tab-btn.active { background: linear-gradient(135deg, #f0aed0, #c8aee8); color: white; }
 
-    /* Panels */
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* Header */
-    .header { text-align: center; margin-bottom: 1.5rem; }
-    .header h1 { font-size: 26px; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; }
-
-    /* Cards */
+    /* prize info card */
     .info-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+      background: white; border: 1px solid #f4c0dc;
+      border-radius: 18px; padding: 1.25rem 1.5rem;
       margin-bottom: 1rem; box-shadow: 0 2px 12px rgba(232,121,160,0.08);
     }
-
-    .prize-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; }
+    .prize-title { font-size: 15px; font-weight: 600; color: #503060; margin-bottom: 0.75rem; }
     .prize-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .prize-item {
       display: flex; align-items: center; gap: 8px;
-      background: var(--bg-secondary); border-radius: var(--radius-md); padding: 10px 14px;
+      background: #fce8f4; border-radius: 12px; padding: 10px 14px;
     }
     .prize-rank {
       width: 28px; height: 28px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 600; flex-shrink: 0;
     }
-    .prize-rank.r1 { background: var(--gold); color: var(--gold-text); }
-    .prize-rank.r2 { background: var(--silver); color: var(--silver-text); }
-    .prize-rank.r3 { background: var(--bronze); color: var(--bronze-text); }
-    .prize-rank.r4 { background: #e8d5f5; color: #5a2d8a; }
-    .prize-amount { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-    .prize-label { font-size: 11px; color: var(--text-secondary); }
+    .r1 { background: #f5c842; color: #4a3200; }
+    .r2 { background: #d4d0c8; color: #2c2c2a; }
+    .r3 { background: #f0b48a; color: #4a1b0c; }
+    .r4 { background: #e8d5f5; color: #5a2d8a; }
+    .prize-item .prize-rank ~ div .prize-amount { font-size: 14px; font-weight: 600; color: #503060; }
+    .prize-item .prize-rank ~ div .prize-label2 { font-size: 11px; color: #a07ab8; }
 
-    .tc-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; }
+    .tc-title { font-size: 14px; font-weight: 600; color: #503060; margin-bottom: 0.75rem; }
     .tc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
-    .tc-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.5; padding-left: 18px; position: relative; }
-    .tc-list li::before { content: '⌗'; position: absolute; left: 0; color: var(--pink); font-size: 12px; }
+    .tc-list li { font-size: 13px; color: #a07ab8; line-height: 1.5; padding-left: 18px; position: relative; font-weight: 300; }
+    .tc-list li::before { content: '⌗'; position: absolute; left: 0; color: #e896c0; font-size: 12px; }
 
-    .poin-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+    .poin-title { font-size: 13px; font-weight: 600; color: #503060; margin-bottom: 8px; }
     .poin-grid { display: flex; flex-direction: column; gap: 5px; }
     .poin-row {
       display: flex; align-items: center; justify-content: space-between;
-      background: var(--bg-accent); border-radius: 8px; padding: 7px 12px; font-size: 13px;
+      background: #f4eafc; border-radius: 8px; padding: 7px 12px; font-size: 13px;
     }
-    .poin-row .range { color: var(--text-secondary); }
-    .poin-row .pts { font-weight: 600; color: var(--pink); background: var(--bg-secondary); border-radius: 6px; padding: 2px 10px; font-size: 12px; }
+    .poin-row .range { color: #a07ab8; font-weight: 300; }
+    .poin-row .pts { font-weight: 600; color: #e896c0; background: #fce8f4; border-radius: 6px; padding: 2px 10px; font-size: 12px; }
 
-    /* Tracker */
+    /* tracker */
     .tracker-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.25rem;
+      background: white; border: 1px solid #f4c0dc;
+      border-radius: 18px; padding: 1.25rem;
       margin-bottom: 1rem; box-shadow: 0 2px 12px rgba(232,121,160,0.08);
     }
-
-    .admin-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px; background: var(--bg-secondary);
-      border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1rem;
-    }
-    .admin-bar-left { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-    .status-locked { color: var(--text-secondary); }
-    .status-unlocked { color: var(--text-success); }
-    .btn-admin {
-      background: #fff; border: 1px solid var(--border-hover);
-      border-radius: var(--radius-md); color: var(--text-secondary);
-      cursor: pointer; font-size: 12px; padding: 5px 12px;
-      display: inline-flex; align-items: center; gap: 5px; transition: background 0.1s;
-    }
-    .btn-admin:hover { background: var(--bg-accent); }
-    .btn-admin.active { border-color: var(--text-success); color: var(--text-success); }
-
-    .pw-row { display: flex; gap: 8px; margin-bottom: 0.5rem; align-items: center; }
-    .pw-row input[type="password"] {
-      flex: 1; background: #fff; border: 1px solid var(--border);
-      border-radius: var(--radius-md); color: var(--text-primary);
-      font-size: 14px; height: 36px; padding: 0 12px; outline: none;
-    }
-    .pw-row input:focus { border-color: var(--pink); box-shadow: 0 0 0 2px rgba(232,121,160,0.15); }
-    .pw-error { color: var(--text-danger); font-size: 13px; min-height: 18px; margin-bottom: 0.5rem; }
-
-    .input-section { margin-bottom: 1rem; }
-    .input-row { display: flex; gap: 8px; margin-bottom: 0.5rem; }
-    input[type="text"], input[type="number"] {
-      background: #fff; border: 1px solid var(--border);
-      border-radius: var(--radius-md); color: var(--text-primary);
-      font-size: 14px; height: 36px; padding: 0 12px; outline: none; transition: border-color 0.15s;
-    }
-    input[type="text"] { flex: 1; }
-    input[type="number"] { width: 90px; }
-    input:focus { border-color: var(--pink); box-shadow: 0 0 0 2px rgba(232,121,160,0.15); }
-    input:disabled { opacity: 0.4; cursor: not-allowed; }
-
-    button.btn-primary {
-      background: linear-gradient(135deg, #f472b6, #c084fc);
-      border: none; border-radius: var(--radius-md); color: #fff;
-      cursor: pointer; font-size: 14px; height: 36px; padding: 0 16px;
-      display: inline-flex; align-items: center; gap: 6px;
-      transition: opacity 0.1s; white-space: nowrap; font-weight: 500;
-    }
-    button.btn-primary:hover:not(:disabled) { opacity: 0.88; }
-    button.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-
-    .error-msg { color: var(--text-danger); font-size: 13px; min-height: 18px; margin-bottom: 0.75rem; }
-
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1rem; }
-    .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 0.75rem 1rem; }
-    .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
-    .stat-val { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+    .stat-card { background: #fce8f4; border-radius: 10px; padding: 0.75rem 1rem; }
+    .stat-label { font-size: 12px; color: #a07ab8; margin-bottom: 4px; }
+    .stat-val { font-size: 20px; font-weight: 600; color: #503060; }
 
-    .table-wrap { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .table-wrap { border: 1px solid #f4c0dc; border-radius: 14px; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
-    th {
-      background: var(--bg-secondary); color: var(--text-secondary);
-      font-size: 12px; font-weight: 500; padding: 8px 14px;
-      text-align: left; border-bottom: 1px solid var(--border);
-    }
-    td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    th { background: #fce8f4; color: #a07ab8; font-size: 12px; font-weight: 500; padding: 8px 14px; text-align: left; border-bottom: 1px solid #f4c0dc; }
+    td { padding: 10px 14px; border-bottom: 1px solid #f4c0dc; vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #fff8fd; }
     th:nth-child(1), td:nth-child(1) { width: 52px; }
     th:nth-child(2), td:nth-child(2) { width: 100px; }
     th:nth-child(3), td:nth-child(3) { width: 70px; }
-    th:nth-child(5), td:nth-child(5) { width: 40px; }
 
-    .rank-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 600;
-    }
-    .rank-1 { background: var(--gold); color: var(--gold-text); }
-    .rank-2 { background: var(--silver); color: var(--silver-text); }
-    .rank-3 { background: var(--bronze); color: var(--bronze-text); }
-    .rank-n { background: var(--bg-secondary); color: var(--text-secondary); }
+    .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 600; }
+    .rank-1 { background: #f5c842; color: #4a3200; }
+    .rank-2 { background: #d4d0c8; color: #2c2c2a; }
+    .rank-3 { background: #f0b48a; color: #4a1b0c; }
+    .rank-n { background: #fce8f4; color: #a07ab8; }
 
     .code-cell { font-family: monospace; font-size: 14px; font-weight: 500; }
-    .count-cell { font-weight: 600; font-size: 15px; color: var(--pink); }
+    .count-cell { font-weight: 600; font-size: 15px; color: #e896c0; }
     .bar-cell { display: flex; align-items: center; gap: 8px; }
-    .bar-wrap { flex: 1; height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
-    .bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #c084fc); border-radius: 4px; transition: width 0.3s ease; }
-    .pct-label { font-size: 12px; color: var(--text-secondary); min-width: 34px; }
+    .bar-wrap { flex: 1; height: 8px; background: #fce8f4; border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, #f0aed0, #c8aee8); border-radius: 4px; transition: width 0.3s ease; }
+    .pct-label { font-size: 12px; color: #a07ab8; min-width: 34px; }
 
-    .btn-del {
-      background: none; border: none; cursor: pointer;
-      color: var(--text-tertiary); font-size: 18px; line-height: 1; padding: 2px 4px; border-radius: 4px;
+    .empty-msg { text-align: center; padding: 2.5rem; color: #c8b0d8; font-size: 14px; }
+    .loading-msg { text-align: center; padding: 2rem; color: #c8b0d8; font-size: 13px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { display: inline-block; animation: spin 1s linear infinite; }
+
+    /* admin */
+    .admin-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(90deg, #fce8f4, #f0e4fc);
+      border-radius: 10px; padding: 8px 14px; margin-bottom: 0.75rem; margin-top: 0.75rem;
     }
-    .btn-del:hover { background: var(--bg-danger); color: var(--text-danger); }
-    .btn-del:disabled { opacity: 0; pointer-events: none; }
-
-    .empty-msg { text-align: center; padding: 2.5rem; color: var(--text-secondary); font-size: 14px; }
-    .loading-msg { text-align: center; padding: 2rem; color: var(--text-secondary); font-size: 14px; }
+    .admin-status { font-size: 11px; color: #a07ab8; font-weight: 300; }
+    .admin-status.unlocked { color: #5a8a40; }
+    .btn-admin-toggle {
+      background: white; border: 1px solid #e0c8f0; border-radius: 50px;
+      font-size: 10px; color: #a07ab8; padding: 4px 12px; cursor: pointer;
+      font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.5px;
+    }
+    .btn-admin-toggle.active { border-color: #5a8a40; color: #5a8a40; }
+    .pw-row { display: flex; gap: 8px; margin-bottom: 0.5rem; }
+    .pw-row input {
+      flex: 1; background: white; border: 1px solid #e0c8f0;
+      border-radius: 10px; color: #503060; font-size: 12px;
+      height: 34px; padding: 0 12px; outline: none;
+      font-family: 'Josefin Sans', sans-serif;
+    }
+    .pw-row input:focus { border-color: #c8aee8; }
+    .pw-btn {
+      background: linear-gradient(135deg, #f0aed0, #c8aee8); border: none;
+      border-radius: 10px; color: white; font-size: 11px; padding: 0 14px;
+      cursor: pointer; font-family: 'Josefin Sans', sans-serif;
+    }
+    .pw-error { color: #c05050; font-size: 11px; margin-bottom: 0.5rem; }
 
     .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; }
-    .btn-clear {
-      background: none; border: 1px solid var(--border-hover);
-      border-radius: var(--radius-md); color: var(--text-secondary);
-      cursor: pointer; font-size: 13px; padding: 6px 14px;
-      display: inline-flex; align-items: center; gap: 6px;
-    }
-    .btn-clear:hover { background: var(--bg-secondary); }
     .btn-refresh {
-      background: none; border: 1px solid var(--border-hover);
-      border-radius: var(--radius-md); color: var(--text-secondary);
-      cursor: pointer; font-size: 13px; padding: 6px 14px;
+      background: none; border: 1px solid #e0c8f0; border-radius: 10px;
+      color: #a07ab8; cursor: pointer; font-size: 12px; padding: 6px 14px;
       display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Josefin Sans', sans-serif;
     }
-    .btn-refresh:hover { background: var(--bg-secondary); }
-    .sync-msg { font-size: 12px; color: var(--text-tertiary); }
+    .btn-refresh:hover { background: #fce8f4; }
+    .sync-msg { font-size: 12px; color: #c8b0d8; }
 
-    footer { text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 2rem; }
-    footer a { color: var(--pink); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    .footer-btns { display: flex; gap: 10px; justify-content: center; padding: 1.5rem 0 0.5rem; }
+    .footer-btn {
+      display: flex; align-items: center; gap: 6px; padding: 9px 22px;
+      border-radius: 50px; font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px; font-weight: 600; letter-spacing: 1px;
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .footer-btn:hover { opacity: 0.85; }
+    .footer-btn.wa { background: #25d366; color: white; }
+    .footer-btn.tg { background: #229ed9; color: white; }
+    .footer-credit { text-align: center; font-size: 10px; color: #c8b0d8; padding-bottom: 1rem; letter-spacing: 1px; }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spinning { animation: spin 1s linear infinite; display: inline-block; }
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div class="container">
 
-    <!-- Tab Switcher -->
-    <div class="tab-switcher">
-      <button class="tab-btn active" onclick="switchTab('kokoro')">🎀 Kokoro Giveaway</button>
-      <button class="tab-btn" onclick="switchTab('licentia')">🌸 Licentia Giveaway</button>
+<!-- ===== ARCADE PAGE ===== -->
+<div class="page active" id="page-arcade">
+  <div class="arcade-body">
+    <div class="marquee">
+      <div class="marquee-lights">
+        <div class="mlight"></div><div class="mlight"></div><div class="mlight"></div>
+        <div class="mlight"></div><div class="mlight"></div><div class="mlight"></div>
+        <div class="mlight"></div><div class="mlight"></div>
+      </div>
+      <div class="marquee-title">GIVEAWAY!</div>
+      <div class="marquee-sub">✦ hallokokoro ✦</div>
     </div>
 
-    <!-- ===== KOKORO GIVEAWAY ===== -->
-    <div class="tab-panel active" id="panel-kokoro">
-      <div class="header">
-        <h1>🎀 Kokoro Giveaway 🎀</h1>
+    <div class="cabinet">
+      <div class="side-left"><div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div></div>
+      <div class="side-right"><div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div></div>
+      <div class="screen-bezel">
+        <div class="screen">
+          <div class="screen-header">✦ start now! ✦</div>
+          <div class="prize-row">
+            <div class="prize-box"><img src="hadiah1.png" alt="hadiah 1" /></div>
+            <div class="prize-box"><img src="hadiah2.png" alt="hadiah 2" /></div>
+            <div class="prize-box"><img src="hadiah3.png" alt="hadiah 3" /></div>
+          </div>
+          <div class="ticker">
+            <div class="ticker-title">periode giveaway</div>
+            <div class="ticker-date" id="periodeText">1 Jun 2026 — 30 Jun 2026</div>
+          </div>
+        </div>
       </div>
+      <div class="speakers">
+        <div class="speaker">
+          <div class="speaker-line" style="width:26px"></div>
+          <div class="speaker-line" style="width:20px"></div>
+          <div class="speaker-line" style="width:24px"></div>
+          <div class="speaker-line" style="width:16px"></div>
+        </div>
+        <div class="speaker" style="align-items:flex-end">
+          <div class="speaker-line" style="width:26px"></div>
+          <div class="speaker-line" style="width:20px"></div>
+          <div class="speaker-line" style="width:24px"></div>
+          <div class="speaker-line" style="width:16px"></div>
+        </div>
+      </div>
+    </div>
 
-      <div class="info-card">
-        <div class="prize-title">hadiah! ꒰ ˆ ꒵ ˆ꒱ ⟡</div>
-        <div class="prize-list">
-          <div class="prize-item"><div class="prize-rank r1">1</div><div><div class="prize-amount">Rp 40.000</div><div class="prize-label">Peringkat 1</div></div></div>
-          <div class="prize-item"><div class="prize-rank r2">2</div><div><div class="prize-amount">Rp 30.000</div><div class="prize-label">Peringkat 2</div></div></div>
-          <div class="prize-item"><div class="prize-rank r3">3</div><div><div class="prize-amount">Rp 20.000</div><div class="prize-label">Peringkat 3</div></div></div>
-          <div class="prize-item"><div class="prize-rank r4">4</div><div><div class="prize-amount">Rp 10.000</div><div class="prize-label">Peringkat 4</div></div></div>
+    <div class="control-panel">
+      <div class="controls-layout">
+        <div class="joystick">
+          <div class="j-ball"></div>
+          <div class="j-stick"></div>
+          <div class="j-gate"><div class="j-gate-hole"></div></div>
+        </div>
+        <div class="btn-group">
+          <div class="abtn-outer">
+            <button class="abtn abtn-kokoro" onclick="goToGiveaway('kokoro')">
+              <div class="btn-dot"></div>ress kokoro<div class="btn-dot"></div>
+            </button>
+          </div>
+          <div class="abtn-outer">
+            <button class="abtn abtn-licentia" onclick="goToGiveaway('licentia')">
+              <div class="btn-dot"></div>ress licentia<div class="btn-dot"></div>
+            </button>
+          </div>
         </div>
       </div>
 
+      <!-- ADMIN PERIODE -->
+      <div id="adminPeriodeBar" style="margin-top:10px;">
+        <div class="admin-bar" style="margin:0;">
+          <div class="admin-status" id="periodeAdminStatus">mode publik</div>
+          <button class="btn-admin-toggle" id="periodeAdminToggle" onclick="togglePeriodeAdmin()">masuk admin</button>
+        </div>
+        <div id="periodeAdminSec" class="hidden" style="margin-top:8px;">
+          <div class="pw-row">
+            <input type="password" id="periodeAdminPw" placeholder="password admin..." />
+            <button class="pw-btn" onclick="submitPeriodeAdmin()">masuk</button>
+          </div>
+          <div class="pw-error hidden" id="periodeAdminErr">password salah.</div>
+        </div>
+        <div id="periodeEditSec" class="hidden" style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+          <input type="text" id="periodeInput" placeholder="contoh: 1 Jun 2026 — 30 Jun 2026"
+            style="flex:1;background:white;border:1px solid #e0c8f0;border-radius:10px;color:#503060;font-size:11px;height:32px;padding:0 10px;outline:none;font-family:'Josefin Sans',sans-serif;" />
+          <button onclick="savePeriode()" style="background:linear-gradient(135deg,#f0aed0,#c8aee8);border:none;border-radius:10px;color:white;font-size:11px;padding:0 12px;height:32px;cursor:pointer;font-family:'Josefin Sans',sans-serif;">simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cabinet-bottom">
+      <div class="cabinet-footer">@hallokokoro on telegram</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GIVEAWAY PAGE ===== -->
+<div class="page" id="page-giveaway">
+  <div class="giveaway-wrap">
+    <button class="back-btn" onclick="goBack()">← kembali</button>
+
+    <div class="tab-switcher">
+      <button class="tab-btn active" id="tab-kokoro" onclick="switchTab('kokoro')">🎀 Kokoro Giveaway</button>
+      <button class="tab-btn" id="tab-licentia" onclick="switchTab('licentia')">🌸 Licentia Giveaway</button>
+    </div>
+
+    <!-- KOKORO -->
+    <div class="tab-panel active" id="panel-kokoro">
+      <div class="info-card">
+        <div class="prize-title">hadiah! ꒰ ˆ ꒵ ˆ꒱ ⟡</div>
+        <div class="prize-list">
+          <div class="prize-item"><div class="prize-rank r1">1</div><div><div class="prize-amount">Rp 40.000</div><div class="prize-label2">Peringkat 1</div></div></div>
+          <div class="prize-item"><div class="prize-rank r2">2</div><div><div class="prize-amount">Rp 30.000</div><div class="prize-label2">Peringkat 2</div></div></div>
+          <div class="prize-item"><div class="prize-rank r3">3</div><div><div class="prize-amount">Rp 20.000</div><div class="prize-label2">Peringkat 3</div></div></div>
+          <div class="prize-item"><div class="prize-rank r4">4</div><div><div class="prize-amount">Rp 10.000</div><div class="prize-label2">Peringkat 4</div></div></div>
+        </div>
+      </div>
       <div class="info-card">
         <div class="tc-title">💭 ໒ັ term and condition</div>
         <ul class="tc-list">
@@ -280,31 +438,22 @@
           <div class="poin-row"><span class="range">Transaksi diatas 100k</span><span class="pts">5 poin</span></div>
         </div>
       </div>
-
       <div class="tracker-card">
         <div class="admin-bar">
-          <div class="admin-bar-left">
-            <i class="ti ti-lock" id="lockIcon-kokoro" style="font-size:16px"></i>
-            <span id="adminStatus-kokoro" class="status-locked">Mode publik — hanya bisa melihat</span>
-          </div>
-          <button class="btn-admin" id="btnAdminToggle-kokoro" onclick="toggleAdmin('kokoro')">
-            <i class="ti ti-shield"></i> <span id="btnAdminLabel-kokoro">Masuk sebagai Admin</span>
-          </button>
+          <div class="admin-status" id="adminstatus-kokoro">mode publik</div>
+          <button class="btn-admin-toggle" id="admintoggle-kokoro" onclick="toggleAdmin('kokoro')">masuk admin</button>
         </div>
-        <div id="pwSection-kokoro" class="hidden">
-          <div class="pw-row">
-            <input type="password" id="pwInput-kokoro" placeholder="Masukkan password admin..." />
-            <button class="btn-primary" onclick="submitPw('kokoro')"><i class="ti ti-arrow-right"></i> Masuk</button>
-          </div>
-          <div class="pw-error" id="pwError-kokoro"></div>
+        <div id="pwsec-kokoro" class="hidden">
+          <div class="pw-row"><input type="password" id="pwinput-kokoro" placeholder="password admin..." /><button class="pw-btn" onclick="submitPw('kokoro')">masuk</button></div>
+          <div class="pw-error hidden" id="pwerr-kokoro">password salah.</div>
         </div>
-        <div id="inputSection-kokoro" class="input-section hidden">
-          <div class="input-row">
-            <input type="text" id="codeInput-kokoro" placeholder="Kode (3-5 digit terakhir WA)" maxlength="10" />
-            <input type="number" id="countInput-kokoro" placeholder="Poin" min="1" value="1" />
-            <button class="btn-primary" id="btnTambah-kokoro" onclick="addCode('kokoro')"><i class="ti ti-plus"></i> Tambah</button>
+        <div id="inputsec-kokoro" class="hidden" style="margin-bottom:1rem;">
+          <div style="display:flex;gap:8px;margin-bottom:0.5rem;">
+            <input type="text" id="codeInput-kokoro" placeholder="kode (3-5 digit terakhir WA)" maxlength="10" style="flex:1;background:white;border:1px solid #e0c8f0;border-radius:10px;color:#503060;font-size:12px;height:36px;padding:0 12px;outline:none;font-family:'Josefin Sans',sans-serif;" />
+            <input type="number" id="countInput-kokoro" placeholder="poin" min="1" value="1" style="width:80px;background:white;border:1px solid #e0c8f0;border-radius:10px;color:#503060;font-size:12px;height:36px;padding:0 12px;outline:none;font-family:'Josefin Sans',sans-serif;" />
+            <button id="btnTambah-kokoro" onclick="addCode('kokoro')" style="background:linear-gradient(135deg,#f0aed0,#c8aee8);border:none;border-radius:10px;color:white;font-size:12px;padding:0 14px;cursor:pointer;font-family:'Josefin Sans',sans-serif;">tambah</button>
           </div>
-          <div class="error-msg" id="errMsg-kokoro"></div>
+          <div style="color:#c05050;font-size:11px;min-height:16px;" id="errMsg-kokoro"></div>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Total peserta</div><div class="stat-val" id="statUnique-kokoro">—</div></div>
@@ -313,38 +462,28 @@
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Rank</th><th>Kode</th><th>Poin</th><th>Proporsi</th><th></th></tr></thead>
-            <tbody id="tableBody-kokoro">
-              <tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning"></i> Memuat data...</td></tr>
-            </tbody>
+            <thead><tr><th>Rank</th><th>Kode</th><th>Poin</th><th>Proporsi</th></tr></thead>
+            <tbody id="tableBody-kokoro"><tr><td colspan="4" class="loading-msg"><span class="spin">↻</span> memuat...</td></tr></tbody>
           </table>
         </div>
         <div class="action-row">
-          <button class="btn-refresh" onclick="fetchData('kokoro')"><i class="ti ti-refresh"></i> Refresh</button>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="sync-msg" id="syncMsg-kokoro"></span>
-            <button class="btn-clear hidden" id="btnClear-kokoro" onclick="clearAll('kokoro')"><i class="ti ti-trash"></i> Hapus semua</button>
-          </div>
+          <button class="btn-refresh" onclick="fetchData('kokoro')">↻ refresh</button>
+          <span class="sync-msg" id="syncMsg-kokoro"></span>
         </div>
       </div>
     </div>
 
-    <!-- ===== LICENTIA GIVEAWAY ===== -->
+    <!-- LICENTIA -->
     <div class="tab-panel" id="panel-licentia">
-      <div class="header">
-        <h1>🌸 Licentia Giveaway 🌸</h1>
-      </div>
-
       <div class="info-card">
         <div class="prize-title">hadiah! ꒰ ˆ ꒵ ˆ꒱ ⟡</div>
         <div class="prize-list">
-          <div class="prize-item"><div class="prize-rank r1">1</div><div><div class="prize-amount">Rp 40.000</div><div class="prize-label">Peringkat 1</div></div></div>
-          <div class="prize-item"><div class="prize-rank r2">2</div><div><div class="prize-amount">Rp 30.000</div><div class="prize-label">Peringkat 2</div></div></div>
-          <div class="prize-item"><div class="prize-rank r3">3</div><div><div class="prize-amount">Rp 20.000</div><div class="prize-label">Peringkat 3</div></div></div>
-          <div class="prize-item"><div class="prize-rank r4">4</div><div><div class="prize-amount">Rp 10.000</div><div class="prize-label">Peringkat 4</div></div></div>
+          <div class="prize-item"><div class="prize-rank r1">1</div><div><div class="prize-amount">Rp 40.000</div><div class="prize-label2">Peringkat 1</div></div></div>
+          <div class="prize-item"><div class="prize-rank r2">2</div><div><div class="prize-amount">Rp 30.000</div><div class="prize-label2">Peringkat 2</div></div></div>
+          <div class="prize-item"><div class="prize-rank r3">3</div><div><div class="prize-amount">Rp 20.000</div><div class="prize-label2">Peringkat 3</div></div></div>
+          <div class="prize-item"><div class="prize-rank r4">4</div><div><div class="prize-amount">Rp 10.000</div><div class="prize-label2">Peringkat 4</div></div></div>
         </div>
       </div>
-
       <div class="info-card">
         <div class="tc-title">💭 ໒ັ term and condition</div>
         <ul class="tc-list">
@@ -363,31 +502,22 @@
           <div class="poin-row"><span class="range">Transaksi diatas 100k</span><span class="pts">5 poin</span></div>
         </div>
       </div>
-
       <div class="tracker-card">
         <div class="admin-bar">
-          <div class="admin-bar-left">
-            <i class="ti ti-lock" id="lockIcon-licentia" style="font-size:16px"></i>
-            <span id="adminStatus-licentia" class="status-locked">Mode publik — hanya bisa melihat</span>
-          </div>
-          <button class="btn-admin" id="btnAdminToggle-licentia" onclick="toggleAdmin('licentia')">
-            <i class="ti ti-shield"></i> <span id="btnAdminLabel-licentia">Masuk sebagai Admin</span>
-          </button>
+          <div class="admin-status" id="adminstatus-licentia">mode publik</div>
+          <button class="btn-admin-toggle" id="admintoggle-licentia" onclick="toggleAdmin('licentia')">masuk admin</button>
         </div>
-        <div id="pwSection-licentia" class="hidden">
-          <div class="pw-row">
-            <input type="password" id="pwInput-licentia" placeholder="Masukkan password admin..." />
-            <button class="btn-primary" onclick="submitPw('licentia')"><i class="ti ti-arrow-right"></i> Masuk</button>
-          </div>
-          <div class="pw-error" id="pwError-licentia"></div>
+        <div id="pwsec-licentia" class="hidden">
+          <div class="pw-row"><input type="password" id="pwinput-licentia" placeholder="password admin..." /><button class="pw-btn" onclick="submitPw('licentia')">masuk</button></div>
+          <div class="pw-error hidden" id="pwerr-licentia">password salah.</div>
         </div>
-        <div id="inputSection-licentia" class="input-section hidden">
-          <div class="input-row">
-            <input type="text" id="codeInput-licentia" placeholder="Kode (3-5 digit terakhir WA)" maxlength="10" />
-            <input type="number" id="countInput-licentia" placeholder="Poin" min="1" value="1" />
-            <button class="btn-primary" id="btnTambah-licentia" onclick="addCode('licentia')"><i class="ti ti-plus"></i> Tambah</button>
+        <div id="inputsec-licentia" class="hidden" style="margin-bottom:1rem;">
+          <div style="display:flex;gap:8px;margin-bottom:0.5rem;">
+            <input type="text" id="codeInput-licentia" placeholder="kode (3-5 digit terakhir WA)" maxlength="10" style="flex:1;background:white;border:1px solid #e0c8f0;border-radius:10px;color:#503060;font-size:12px;height:36px;padding:0 12px;outline:none;font-family:'Josefin Sans',sans-serif;" />
+            <input type="number" id="countInput-licentia" placeholder="poin" min="1" value="1" style="width:80px;background:white;border:1px solid #e0c8f0;border-radius:10px;color:#503060;font-size:12px;height:36px;padding:0 12px;outline:none;font-family:'Josefin Sans',sans-serif;" />
+            <button id="btnTambah-licentia" onclick="addCode('licentia')" style="background:linear-gradient(135deg,#f0aed0,#c8aee8);border:none;border-radius:10px;color:white;font-size:12px;padding:0 14px;cursor:pointer;font-family:'Josefin Sans',sans-serif;">tambah</button>
           </div>
-          <div class="error-msg" id="errMsg-licentia"></div>
+          <div style="color:#c05050;font-size:11px;min-height:16px;" id="errMsg-licentia"></div>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Total peserta</div><div class="stat-val" id="statUnique-licentia">—</div></div>
@@ -396,192 +526,217 @@
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Rank</th><th>Kode</th><th>Poin</th><th>Proporsi</th><th></th></tr></thead>
-            <tbody id="tableBody-licentia">
-              <tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning"></i> Memuat data...</td></tr>
-            </tbody>
+            <thead><tr><th>Rank</th><th>Kode</th><th>Poin</th><th>Proporsi</th></tr></thead>
+            <tbody id="tableBody-licentia"><tr><td colspan="4" class="loading-msg"><span class="spin">↻</span> memuat...</td></tr></tbody>
           </table>
         </div>
         <div class="action-row">
-          <button class="btn-refresh" onclick="fetchData('licentia')"><i class="ti ti-refresh"></i> Refresh</button>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="sync-msg" id="syncMsg-licentia"></span>
-            <button class="btn-clear hidden" id="btnClear-licentia" onclick="clearAll('licentia')"><i class="ti ti-trash"></i> Hapus semua</button>
-          </div>
+          <button class="btn-refresh" onclick="fetchData('licentia')">↻ refresh</button>
+          <span class="sync-msg" id="syncMsg-licentia"></span>
         </div>
       </div>
     </div>
 
-    <footer>made by <a href="https://t.me/hallokokoro" target="_blank">@hallokokoro</a> on telegram</footer>
+    <div class="footer-btns">
+      <a class="footer-btn wa" href="https://wa.me/6285190818032" target="_blank">whatsapp</a>
+      <a class="footer-btn tg" href="https://t.me/hallokokoro" target="_blank">telegram</a>
+    </div>
+    <div class="footer-credit">@hallokokoro on telegram</div>
   </div>
+</div>
 
-  <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxmnSAy8WzZ_vQlP8YtVb8pTbjutrRqdblL7CSQmUTYkWngeDdWC80EtwOImBC8wbvr/exec';
-    const CORRECT_PW = 'candylucu';
-    const SHEET_MAP = { kokoro: 'Giveaway1', licentia: 'Giveaway2' };
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbxmnSAy8WzZ_vQlP8YtVb8pTbjutrRqdblL7CSQmUTYkWngeDdWC80EtwOImBC8wbvr/exec';
+const PW = 'candylucu';
+const SHEET_MAP = { kokoro: 'Giveaway1', licentia: 'Giveaway2' };
 
-    let dataStore = { kokoro: {}, licentia: {} };
-    let adminState = { kokoro: false, licentia: false };
-    let pwVisible = { kokoro: false, licentia: false };
+let dataStore = { kokoro: {}, licentia: {} };
+let adminState = {};
+let currentTab = 'kokoro';
 
-    function g(id) { return document.getElementById(id); }
+const PERIODE_KEY = 'giveaway_periode';
 
-    function api(params) {
-      const url = new URL(API_URL);
-      Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
-      return fetch(url.toString()).then(r => r.json());
-    }
+function g(id){ return document.getElementById(id); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s){ return String(s||'').replace(/'/g,"\\'"); }
 
-    function switchTab(tab) {
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      g('panel-' + tab).classList.add('active');
-      document.querySelectorAll('.tab-btn')[tab === 'kokoro' ? 0 : 1].classList.add('active');
-    }
+// PERIODE
+function loadPeriode(){
+  const saved = localStorage.getItem(PERIODE_KEY);
+  if(saved) g('periodeText').textContent = saved;
+}
+function togglePeriodeAdmin(){
+  if(adminState['periode']){
+    adminState['periode'] = false;
+    g('periodeAdminStatus').textContent = 'mode publik';
+    g('periodeAdminStatus').className = 'admin-status';
+    g('periodeAdminToggle').textContent = 'masuk admin';
+    g('periodeAdminToggle').classList.remove('active');
+    g('periodeAdminSec').classList.add('hidden');
+    g('periodeEditSec').classList.add('hidden');
+    return;
+  }
+  g('periodeAdminSec').classList.toggle('hidden');
+  if(!g('periodeAdminSec').classList.contains('hidden')) g('periodeAdminPw').focus();
+}
+function submitPeriodeAdmin(){
+  if(g('periodeAdminPw').value === PW){
+    adminState['periode'] = true;
+    g('periodeAdminSec').classList.add('hidden');
+    g('periodeAdminStatus').textContent = 'mode admin aktif';
+    g('periodeAdminStatus').className = 'admin-status unlocked';
+    g('periodeAdminToggle').textContent = 'keluar admin';
+    g('periodeAdminToggle').classList.add('active');
+    g('periodeEditSec').style.display = 'flex';
+    g('periodeEditSec').classList.remove('hidden');
+    g('periodeInput').value = g('periodeText').textContent;
+    g('periodeAdminPw').value = '';
+    g('periodeAdminErr').classList.add('hidden');
+  } else {
+    g('periodeAdminErr').classList.remove('hidden');
+    g('periodeAdminPw').value = '';
+    setTimeout(()=>g('periodeAdminErr').classList.add('hidden'), 2000);
+  }
+}
+function savePeriode(){
+  const val = g('periodeInput').value.trim();
+  if(!val) return;
+  localStorage.setItem(PERIODE_KEY, val);
+  g('periodeText').textContent = val;
+  g('periodeEditSec').style.display = 'none';
+}
 
-    async function fetchData(tab) {
-      g('tableBody-' + tab).innerHTML = '<tr><td colspan="5" class="loading-msg"><i class="ti ti-refresh spinning"></i> Memuat data...</td></tr>';
-      g('syncMsg-' + tab).textContent = '';
-      try {
-        const res = await api({ action: 'get', sheet: SHEET_MAP[tab] });
-        dataStore[tab] = res.data || {};
-        render(tab);
-        const now = new Date();
-        g('syncMsg-' + tab).textContent = 'Diperbarui ' + now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-      } catch(e) {
-        g('tableBody-' + tab).innerHTML = '<tr><td colspan="5" class="empty-msg" style="color:var(--text-danger)">Gagal memuat data. Coba refresh.</td></tr>';
-      }
-    }
+// PAGE NAV
+function goToGiveaway(tab){
+  g('page-arcade').classList.remove('active');
+  g('page-giveaway').classList.add('active');
+  window.scrollTo(0,0);
+  switchTab(tab);
+  if(!Object.keys(dataStore[tab]).length) fetchData(tab);
+}
+function goBack(){
+  g('page-giveaway').classList.remove('active');
+  g('page-arcade').classList.add('active');
+  window.scrollTo(0,0);
+}
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  g('panel-'+tab).classList.add('active');
+  g('tab-'+tab).classList.add('active');
+  if(!Object.keys(dataStore[tab]).length) fetchData(tab);
+}
 
-    async function addCode(tab) {
-      if (!adminState[tab]) return;
-      const code = g('codeInput-' + tab).value.trim();
-      const count = parseInt(g('countInput-' + tab).value) || 1;
-      const err = g('errMsg-' + tab);
-      if (!code) { err.textContent = 'Kode tidak boleh kosong.'; return; }
-      if (count < 1 || count > 9999) { err.textContent = 'Poin harus antara 1 – 9999.'; return; }
-      err.textContent = '';
-      const newCount = (dataStore[tab][code] || 0) + count;
-      g('btnTambah-' + tab).disabled = true;
-      try {
-        await api({ action: 'set', sheet: SHEET_MAP[tab], code, count: newCount });
-        dataStore[tab][code] = newCount;
-        render(tab);
-        g('codeInput-' + tab).value = '';
-        g('countInput-' + tab).value = '1';
-        g('codeInput-' + tab).focus();
-        g('syncMsg-' + tab).textContent = 'Tersimpan ✓';
-      } catch(e) { err.textContent = 'Gagal menyimpan. Coba lagi.'; }
-      g('btnTambah-' + tab).disabled = false;
-    }
+// API
+async function apiCall(params){
+  const url = new URL(API);
+  Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
+  return (await fetch(url.toString())).json();
+}
 
-    async function deleteCode(tab, code) {
-      if (!adminState[tab]) return;
-      if (!confirm('Hapus kode ' + code + '?')) return;
-      try {
-        await api({ action: 'delete', sheet: SHEET_MAP[tab], code });
-        delete dataStore[tab][code];
-        render(tab);
-        g('syncMsg-' + tab).textContent = 'Dihapus ✓';
-      } catch(e) { alert('Gagal menghapus. Coba lagi.'); }
-    }
+async function fetchData(tab){
+  g('tableBody-'+tab).innerHTML = '<tr><td colspan="4" class="loading-msg"><span class="spin">↻</span> memuat...</td></tr>';
+  try{
+    const res = await apiCall({action:'get', sheet: SHEET_MAP[tab]});
+    dataStore[tab] = res.data || {};
+    render(tab);
+    const now = new Date();
+    g('syncMsg-'+tab).textContent = 'diperbarui ' + now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  } catch(e){
+    g('tableBody-'+tab).innerHTML = '<tr><td colspan="4" class="empty-msg" style="color:#c05050">gagal memuat.</td></tr>';
+  }
+}
 
-    async function clearAll(tab) {
-      if (!adminState[tab]) return;
-      if (!Object.keys(dataStore[tab]).length) return;
-      if (!confirm('Hapus SEMUA data? Tindakan ini tidak bisa dibatalkan.')) return;
-      try {
-        await api({ action: 'clear', sheet: SHEET_MAP[tab] });
-        dataStore[tab] = {};
-        render(tab);
-        g('syncMsg-' + tab).textContent = 'Semua data dihapus ✓';
-      } catch(e) { alert('Gagal menghapus. Coba lagi.'); }
-    }
+async function addCode(tab){
+  if(!adminState[tab]) return;
+  const code = g('codeInput-'+tab).value.trim();
+  const count = parseInt(g('countInput-'+tab).value)||1;
+  const err = g('errMsg-'+tab);
+  if(!code){ err.textContent='kode tidak boleh kosong.'; return; }
+  if(count<1||count>9999){ err.textContent='poin harus 1–9999.'; return; }
+  err.textContent = '';
+  const newCount = (dataStore[tab][code]||0) + count;
+  g('btnTambah-'+tab).disabled = true;
+  try{
+    await apiCall({action:'set', sheet:SHEET_MAP[tab], code, count:newCount});
+    dataStore[tab][code] = newCount;
+    render(tab);
+    g('codeInput-'+tab).value = '';
+    g('countInput-'+tab).value = '1';
+    g('codeInput-'+tab).focus();
+    g('syncMsg-'+tab).textContent = 'tersimpan ✓';
+  } catch(e){ err.textContent='gagal menyimpan.'; }
+  g('btnTambah-'+tab).disabled = false;
+}
 
-    function toggleAdmin(tab) {
-      if (adminState[tab]) {
-        adminState[tab] = false; pwVisible[tab] = false;
-        g('pwSection-' + tab).classList.add('hidden');
-        g('inputSection-' + tab).classList.add('hidden');
-        g('btnClear-' + tab).classList.add('hidden');
-        g('lockIcon-' + tab).className = 'ti ti-lock';
-        g('adminStatus-' + tab).textContent = 'Mode publik — hanya bisa melihat';
-        g('adminStatus-' + tab).className = 'status-locked';
-        g('btnAdminLabel-' + tab).textContent = 'Masuk sebagai Admin';
-        g('btnAdminToggle-' + tab).classList.remove('active');
-        render(tab); return;
-      }
-      pwVisible[tab] = !pwVisible[tab];
-      g('pwSection-' + tab).classList.toggle('hidden', !pwVisible[tab]);
-      if (pwVisible[tab]) { g('pwInput-' + tab).focus(); g('pwError-' + tab).textContent = ''; }
-    }
+function toggleAdmin(tab){
+  if(adminState[tab]){
+    adminState[tab]=false;
+    g('adminstatus-'+tab).textContent='mode publik';
+    g('adminstatus-'+tab).className='admin-status';
+    g('admintoggle-'+tab).textContent='masuk admin';
+    g('admintoggle-'+tab).classList.remove('active');
+    g('inputsec-'+tab).classList.add('hidden');
+    g('pwsec-'+tab).classList.add('hidden');
+    render(tab); return;
+  }
+  const pw=g('pwsec-'+tab);
+  pw.classList.toggle('hidden');
+  if(!pw.classList.contains('hidden')) g('pwinput-'+tab).focus();
+}
+function submitPw(tab){
+  if(g('pwinput-'+tab).value===PW){
+    adminState[tab]=true;
+    g('pwsec-'+tab).classList.add('hidden');
+    g('adminstatus-'+tab).textContent='mode admin aktif';
+    g('adminstatus-'+tab).className='admin-status unlocked';
+    g('admintoggle-'+tab).textContent='keluar admin';
+    g('admintoggle-'+tab).classList.add('active');
+    g('inputsec-'+tab).classList.remove('hidden');
+    g('pwinput-'+tab).value='';
+    render(tab);
+  } else {
+    g('pwerr-'+tab).classList.remove('hidden');
+    g('pwinput-'+tab).value='';
+    setTimeout(()=>g('pwerr-'+tab).classList.add('hidden'),2000);
+  }
+}
 
-    function submitPw(tab) {
-      const val = g('pwInput-' + tab).value;
-      if (val === CORRECT_PW) {
-        adminState[tab] = true; pwVisible[tab] = false;
-        g('pwSection-' + tab).classList.add('hidden');
-        g('inputSection-' + tab).classList.remove('hidden');
-        g('btnClear-' + tab).classList.remove('hidden');
-        g('lockIcon-' + tab).className = 'ti ti-shield-check';
-        g('adminStatus-' + tab).textContent = 'Mode admin — dapat menambah & menghapus data';
-        g('adminStatus-' + tab).className = 'status-unlocked';
-        g('btnAdminLabel-' + tab).textContent = 'Keluar Admin';
-        g('btnAdminToggle-' + tab).classList.add('active');
-        g('pwInput-' + tab).value = '';
-        g('pwError-' + tab).textContent = '';
-        g('codeInput-' + tab).focus();
-        render(tab);
-      } else {
-        g('pwError-' + tab).textContent = 'Password salah. Coba lagi.';
-        g('pwInput-' + tab).value = '';
-        g('pwInput-' + tab).focus();
-      }
-    }
+function render(tab){
+  const sorted = Object.entries(dataStore[tab]).sort((a,b)=>b[1]-a[1]);
+  const total = sorted.reduce((s,[,v])=>s+Number(v),0);
+  const max = sorted.length ? Number(sorted[0][1]) : 1;
+  g('statUnique-'+tab).textContent = sorted.length;
+  g('statTotal-'+tab).textContent = total.toLocaleString('id-ID');
+  g('statTop-'+tab).textContent = sorted.length ? sorted[0][0] : '—';
+  const tbody = g('tableBody-'+tab);
+  if(!sorted.length){ tbody.innerHTML='<tr><td colspan="4" class="empty-msg">belum ada data. 🌸</td></tr>'; return; }
+  tbody.innerHTML = sorted.map(([code,count],i)=>{
+    const rank=i+1, c=Number(count);
+    const pct=total?Math.round(c/total*100):0;
+    const barW=Math.round(c/max*100);
+    const rc=rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-n';
+    return `<tr>
+      <td><span class="rank-badge ${rc}">${rank}</span></td>
+      <td class="code-cell">${esc(code)}</td>
+      <td class="count-cell">${c.toLocaleString('id-ID')}</td>
+      <td><div class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:${barW}%"></div></div><span class="pct-label">${pct}%</span></div></td>
+    </tr>`;
+  }).join('');
+}
 
-    function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-    function escAttr(s) { return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+document.addEventListener('keydown', e=>{
+  if(e.key!=='Enter'||!document.activeElement) return;
+  const id = document.activeElement.id;
+  if(id==='periodeAdminPw') submitPeriodeAdmin();
+  else if(id==='pwinput-kokoro') submitPw('kokoro');
+  else if(id==='pwinput-licentia') submitPw('licentia');
+  else if(id==='codeInput-kokoro'||id==='countInput-kokoro') addCode('kokoro');
+  else if(id==='codeInput-licentia'||id==='countInput-licentia') addCode('licentia');
+});
 
-    function render(tab) {
-      const data = dataStore[tab];
-      const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]);
-      const total = sorted.reduce((s,[,v]) => s+Number(v), 0);
-      const max = sorted.length ? Number(sorted[0][1]) : 1;
-      const isAdm = adminState[tab];
-
-      g('statUnique-' + tab).textContent = sorted.length;
-      g('statTotal-' + tab).textContent = total.toLocaleString('id-ID');
-      g('statTop-' + tab).textContent = sorted.length ? sorted[0][0] : '—';
-
-      const tbody = g('tableBody-' + tab);
-      if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">Belum ada data. 🌸</td></tr>'; return; }
-      tbody.innerHTML = sorted.map(([code, count], i) => {
-        const rank = i+1, c = Number(count);
-        const pct = total ? Math.round(c/total*100) : 0;
-        const barW = Math.round(c/max*100);
-        const rc = rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-n';
-        return `<tr>
-          <td><span class="rank-badge ${rc}">${rank}</span></td>
-          <td class="code-cell">${esc(code)}</td>
-          <td class="count-cell">${c.toLocaleString('id-ID')}</td>
-          <td><div class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:${barW}%"></div></div><span class="pct-label">${pct}%</span></div></td>
-          <td><button class="btn-del" onclick="deleteCode('${tab}','${escAttr(code)}')" ${isAdm?'':'disabled'}>×</button></td>
-        </tr>`;
-      }).join('');
-    }
-
-    // Enter key support
-    ['kokoro','licentia'].forEach(tab => {
-      setTimeout(() => {
-        g('pwInput-'+tab)?.addEventListener('keydown', e => { if(e.key==='Enter') submitPw(tab); });
-        g('codeInput-'+tab)?.addEventListener('keydown', e => { if(e.key==='Enter') addCode(tab); });
-        g('countInput-'+tab)?.addEventListener('keydown', e => { if(e.key==='Enter') addCode(tab); });
-      }, 100);
-    });
-
-    // Load both
-    fetchData('kokoro');
-    fetchData('licentia');
-  </script>
+loadPeriode();
+</script>
 </body>
 </html>
